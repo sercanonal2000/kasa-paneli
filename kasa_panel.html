@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kasa Paneli</title>
+
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #0b1320;
+      --card: #111827;
+      --accent: #22c55e;
+      --accent-soft: rgba(34,197,94,0.15);
+      --danger: #ef4444;
+      --danger-soft: rgba(239,68,68,0.15);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border: #1f2937;
+      --pill-bg: #020617;
+      --pill-border: #1e293b;
+      --radius-lg: 16px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 48%, #000 100%);
+      color: var(--text-main);
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: 0.06em;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: #0b1220;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148,163,184,0.12);
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(15,23,42,0.9);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .card-main {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .card-sub {
+      margin-top: 3px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.3);
+      color: var(--text-muted);
+    }
+
+    .pill-success {
+      border-color: rgba(34,197,94,0.5);
+      background: rgba(22,101,52,0.4);
+      color: #bbf7d0;
+    }
+
+    .pill-warning {
+      border-color: rgba(234,179,8,0.6);
+      background: rgba(133,77,14,0.6);
+      color: #fef9c3;
+    }
+
+    .panel {
+      background: rgba(15,23,42,0.85);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      border: 1px solid rgba(148,163,184,0.22);
+      margin-bottom: 20px;
+    }
+
+    .section-sub {
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .helper-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(22,163,74,0.5);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+      white-space: pre;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: var(--radius-pill);
+      padding: 8px 16px;
+      font-size: 13px;
+      border: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.15s;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4ade80, #22c55e, #16a34a);
+      color: #052e16;
+    }
+
+    .btn-secondary {
+      background: rgba(15,23,42,0.95);
+      color: var(--text-main);
+      border: 1px solid rgba(148,163,184,0.6);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      color: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      padding: 7px 8px;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+      vertical-align: top;
+    }
+
+    th {
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(15,23,42,0.4);
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.7);
+      display: inline-block;
+    }
+
+    .badge-success {
+      border-color: rgba(34,197,94,0.7);
+      color: #bbf7d0;
+    }
+
+    .badge-danger {
+      border-color: rgba(248,113,113,0.7);
+      color: #fecaca;
+    }
+
+    .match-lines {
+      font-size: 13.2px;
+      line-height: 1.55;
+      white-space: pre-line;
+      padding: 4px 0;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    .analysis-card {
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: radial-gradient(
+        circle at top left,
+        rgba(34, 197, 94, 0.14) 0,
+        rgba(15, 23, 42, 0.95) 45%,
+        #020617 100%
+      );
+      font-size: 13px;
+    }
+
+    .analysis-card.alt {
+      background: radial-gradient(
+        circle at top,
+        rgba(56, 189, 248, 0.18) 0,
+        rgba(15, 23, 42, 0.95) 45%,
+        #020617 100%
+      );
+    }
+
+    .analysis-card.warn {
+      background: radial-gradient(
+        circle at top,
+        rgba(251, 191, 36, 0.18) 0,
+        rgba(15, 23, 42, 0.95) 45%,
+        #020617 100%
+      );
+    }
+
+    .analysis-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .analysis-main {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .analysis-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.95);
+      margin-left: 4px;
+    }
+
+    .chip.green {
+      border-color: rgba(34, 197, 94, 0.7);
+      color: #bbf7d0;
+    }
+
+    .chip.red {
+      border-color: rgba(248, 113, 113, 0.7);
+      color: #fecaca;
+    }
+
+    @media (max-width: 1050px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .analysis-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>KASA PANELİ</h1>
+  <div class="subtitle">Atistics Picks kuponlarını premium bir dashboard ile takip et.</div>
+
+  <!-- KASALAR -->
+  <div class="grid">
+    <div class="card">
+      <div class="card-header">
+        <div>Toplam Reel Kasa</div>
+        <span class="pill">Genel</span>
+      </div>
+      <div class="card-main" id="totalBank"></div>
+      <div class="card-sub">Başlangıç: 63.000 ₺</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>Tek Roll</div>
+        <span class="pill pill-success">%50</span>
+      </div>
+      <div class="card-main" id="tekRollBank"></div>
+      <div class="card-sub">Başlangıç: 31.500 ₺</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>Diğer İçerikler</div>
+        <span class="pill pill-success">%50</span>
+      </div>
+      <div class="card-main" id="otherBank"></div>
+      <div class="card-sub">Başlangıç: 31.500 ₺</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>Bekleyen Kupon</div>
+        <span class="pill pill-warning">Risk</span>
+      </div>
+      <div class="card-main" id="pendingGross"></div>
+      <div class="card-sub">Beklenen Brüt: <span id="pendingGrossDetail"></span></div>
+    </div>
+  </div>
+
+  <!-- YENİ KUPON PANELİ -->
+  <div class="panel">
+    <div class="section-sub">Yeni Kupon</div>
+    <div class="helper-text">
+      Atistics metnini alttaki kutuya yapıştır, sonra <b>Metinden Formu Doldur</b>’a bas. Parser;
+      tarih, içerik, stake, oran, oynanan birim ve maç/tercihleri otomatik çeker.
+    </div>
+
+    <div class="form-grid">
+      <div>
+        <label>Tarih</label>
+        <input id="dateInput" placeholder="gg.aa.yyyy" />
+      </div>
+
+      <div>
+        <label>İçerik</label>
+        <select id="icerikSelect">
+          <option value="Tek Roll">Tek Roll</option>
+          <option value="İmza">İmza</option>
+          <option value="Atilla Spesiyal">Atilla Spesiyal</option>
+          <option value="Unique">Unique</option>
+          <option value="Diğer">Diğer</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Stake (%)</label>
+        <input id="stakeInput" placeholder="0.05" />
+      </div>
+
+      <div>
+        <label>Oran</label>
+        <input id="oddsInput" placeholder="1.55" />
+      </div>
+    </div>
+
+    <label>Kupon Metni</label>
+    <textarea id="textInput"></textarea>
+
+    <label style="margin-top:10px">Maçlar / Tercihler</label>
+    <textarea
+      id="matchesInput"
+      placeholder="(İstersen burada manuel düzenleyebilirsin)"
+    ></textarea>
+
+    <div class="btn-row">
+      <button class="btn-secondary" id="fillFromTextBtn">Metinden Formu Doldur</button>
+      <button class="btn-primary" id="addCouponBtn" disabled>Kupon Ekle</button>
+      <button class="btn-secondary" id="resetFormBtn">Formu Sıfırla</button>
+    </div>
+  </div>
+
+  <!-- AKTİF KUPONLAR -->
+  <div class="panel">
+    <div class="section-sub">Aktif Kuponlar</div>
+    <div class="helper-text">
+      Bu tabloda durumu <b>Bekliyor</b> olan kuponlar var. Maçlar bitince Tuttu veya Yattı olarak işaretle.
+    </div>
+    <table id="activeTable">
+      <thead>
+        <tr>
+          <th>Tarih</th>
+          <th>İçerik</th>
+          <th>Stake</th>
+          <th class="right">Oynanan</th>
+          <th class="right">Oran</th>
+          <th class="right">Brüt</th>
+          <th>Maçlar</th>
+          <th>Tercihler</th>
+          <th>İşlem</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- GEÇMİŞ KUPONLAR -->
+  <div class="panel">
+    <div class="section-sub">Geçmiş Kuponlar</div>
+    <table id="historyTable">
+      <thead>
+        <tr>
+          <th>Tarih</th>
+          <th>İçerik</th>
+          <th>Stake</th>
+          <th class="right">Oynanan</th>
+          <th class="right">Oran</th>
+          <th class="right">Brüt</th>
+          <th class="right">Net</th>
+          <th>Sonuç</th>
+          <th>Maçlar</th>
+          <th>Tercihler</th>
+          <th>Sil</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="btn-row" style="justify-content:flex-end;">
+      <button class="btn-danger" id="resetAllBtn">Tüm Veriyi Sıfırla</button>
+    </div>
+  </div>
+
+  <!-- PRO ANALİZ PANELİ -->
+  <div class="panel">
+    <div class="section-sub">Pro Analiz Paneli</div>
+    <div class="helper-text">
+      Sonuçlanan kuponlara göre; Genel, Tek Roll ve Diğer içerikler için ayrı ROI ve başarı analizleri üretir.
+    </div>
+    <div id="analysisContent">Yükleniyor...</div>
+  </div>
+
+  <script>
+    /* =========== UTIL =========== */
+
+    const parseNumber = (str) => {
+      if (!str) return NaN;
+      let s = str.toString().trim().replace(/\s+/g, "");
+
+      if (s.includes(",") && s.includes(".")) {
+        s = s.replace(/\./g, "").replace(",", ".");
+      } else if (s.includes(",") && !s.includes(".")) {
+        s = s.replace(",", ".");
+      } else if (s.includes(".")) {
+        const parts = s.split(".");
+        if (parts.length > 2) {
+          const dec = parts.pop();
+          s = parts.join("") + "." + dec;
+        }
+      }
+      return parseFloat(s);
+    };
+
+    const formatTL = (num) =>
+      isFinite(num)
+        ? num.toLocaleString("tr-TR", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+          }) + " ₺"
+        : "-";
+
+    const clampStake = (s) => {
+      if (!isFinite(s) || s <= 0) return 0;
+      if (s > 1 && s <= 100) return s / 100;
+      return s;
+    };
+
+    const EL = (id) => document.getElementById(id);
+
+    const todayStr = () => {
+      const d = new Date();
+      return (
+        String(d.getDate()).padStart(2, "0") +
+        "." +
+        String(d.getMonth() + 1).padStart(2, "0") +
+        "." +
+        d.getFullYear()
+      );
+    };
+
+    const parseDate = (ddmmyyyy) => {
+      if (!ddmmyyyy) return null;
+      const parts = ddmmyyyy.split(".");
+      if (parts.length !== 3) return null;
+      const [d, m, y] = parts.map((p) => parseInt(p, 10));
+      if (!d || !m || !y) return null;
+      return new Date(y, m - 1, d);
+    };
+
+    /* ========= MATCH NORMALIZE (yeni+eski kayıt uyumu) ========= */
+
+    function normalizeMatchRow(row) {
+      // Yeni şema: {match, pick}
+      if (row && typeof row === "object") {
+        return {
+          match: (row.match || "").toString().trim(),
+          pick: (row.pick || "").toString().trim(),
+        };
+      }
+
+      // Eski şema: string (veya 'maç → tercih' formatında string)
+      if (typeof row === "string") {
+        const line = row.trim();
+        if (!line) return { match: "", pick: "" };
+        const parts = line.split("→");
+        if (parts.length === 2) {
+          return {
+            match: parts[0].trim(),
+            pick: parts[1].trim(),
+          };
+        }
+        return { match: line, pick: "" };
+      }
+
+      return { match: "", pick: "" };
+    }
+
+    /* =========== STATE =========== */
+
+    const INITIAL_TOTAL = 63000;
+    const INITIAL_TEK = INITIAL_TOTAL / 2;
+    const INITIAL_OTHER = INITIAL_TOTAL / 2;
+
+    let state = {
+      tekRollBank: INITIAL_TEK,
+      otherBank: INITIAL_OTHER,
+      coupons: [],
+      lastId: 0,
+    };
+
+    const STORAGE_KEY = "sercan_kasa_paneli_v3";
+
+    const saveState = () => saveStateToCloud();
+	const loadState  = () => listenStateFromCloud();
+
+    /* =========== ADVANCED PARSER =========== */
+
+    function parseCouponText(raw) {
+      const text = (raw || "").trim();
+      const res = {
+        date: undefined,
+        icerik: undefined,
+        stake: undefined,
+        odds: undefined,
+        oynananBirim: undefined,
+        baseBirim: undefined,
+        matches: [],
+      };
+
+      if (!text) return res;
+
+      // --- TARİH ---
+      let m =
+        text.match(/(\d{1,2}\.\d{1,2}\.\d{4})/) ||
+        text.match(/(\d{1,2}\/\d{1,2}\/\d{4})/);
+      if (m) {
+        res.date = m[1].replace("/", ".");
+      } else {
+        const monthMap = {
+          ocak: 1,
+          şubat: 2,
+          subat: 2,
+          mart: 3,
+          nisan: 4,
+          mayıs: 5,
+          mayis: 5,
+          haziran: 6,
+          temmuz: 7,
+          ağustos: 8,
+          agustos: 8,
+          eylül: 9,
+          eylul: 9,
+          ekim: 10,
+          kasım: 11,
+          kasim: 11,
+          aralık: 12,
+          aralik: 12,
+        };
+
+        const m2 = text.match(
+          /(\d{1,2})\s+(Ocak|Şubat|Subat|Mart|Nisan|May[ıi]s|Haziran|Temmuz|Ağustos|Agustos|Eyl[üu]l|Ekim|Kas[ıi]m|Aral[ıi]k)/i
+        );
+        if (m2) {
+          const day = m2[1].padStart(2, "0");
+          const key = m2[2]
+            .toLowerCase()
+            .replace(/ç/g, "c")
+            .replace(/ğ/g, "g")
+            .replace(/ı/g, "i")
+            .replace(/ö/g, "o")
+            .replace(/ş/g, "s")
+            .replace(/ü/g, "u");
+          const monthNum = monthMap[key];
+          if (monthNum) {
+            res.date =
+              day +
+              "." +
+              String(monthNum).padStart(2, "0") +
+              "." +
+              new Date().getFullYear();
+          }
+        }
+      }
+
+      // --- İÇERİK ---
+      if (/TEK\s*ROLL/i.test(text)) res.icerik = "Tek Roll";
+      else if (/AT[İI]LLA\s+SPES[İI]YAL/i.test(text)) res.icerik = "Atilla Spesiyal";
+      else if (/UN[İI]QUE/i.test(text)) res.icerik = "Unique";
+      else if (/[İI]MZA|IMZA/i.test(text)) res.icerik = "İmza";
+
+      // --- ORAN ---
+      const oddsPatterns = [
+        /Yurt.*Oran[ıi]?:\s*([\d.,]+)/i,
+        /Toplam.*Oran[ıi]?:\s*([\d.,]+)/i,
+        /TR.*Oran[ıi]?:\s*([\d.,]+)/i,
+      ];
+
+      for (const p of oddsPatterns) {
+        const mm = text.match(p);
+        if (mm) {
+          res.odds = parseNumber(mm[1]);
+          break;
+        }
+      }
+
+      if (!res.odds) {
+        const fb = text.match(/Oran[ıi]?:?\s*([\d.,]+)/i);
+        if (fb) res.odds = parseNumber(fb[1]);
+      }
+
+      // --- STAKE ---
+      m = text.match(/Stake.*?([\d.,]+)\s*x/i);
+      if (m) {
+        res.stake = clampStake(parseNumber(m[1]));
+      } else {
+        m =
+          text.match(/Stake.*?%+\s*([\d.,]+)/i) ||
+          text.match(/Stake.*?([\d.,]+)\s*%/i);
+        if (m) res.stake = clampStake(parseNumber(m[1]) / 100);
+      }
+
+      // --- OYNANAN BİRİM ---
+      m = text.match(/Oynanan:\s*([\d.,]+)\s*Birim/i);
+      if (m) res.oynananBirim = parseNumber(m[1]);
+
+      m = text.match(/Başlangıç\s+Kasa:\s*([\d.,]+)\s*Birim/i);
+      if (m) res.baseBirim = parseNumber(m[1]);
+
+      if (
+        !res.stake &&
+        isFinite(res.oynananBirim) &&
+        isFinite(res.baseBirim) &&
+        res.baseBirim > 0
+      ) {
+        res.stake = clampStake(res.oynananBirim / res.baseBirim);
+      }
+
+      // --- MAÇ & TERCİH ---
+      const lines = text
+        .split(/\r?\n/)
+        .map((l) => l.trim())
+        .filter(Boolean)
+        .filter(
+          (l) => !/^tercih/i.test(l) && !/^seçim/i.test(l) && !/^pick/i.test(l)
+        );
+
+      let currentMatch = null;
+
+      const isMatch = (line) =>
+        /^⚽/.test(line) ||
+        /^[•\-]\s*/.test(line) ||
+        /^[A-Za-z].+ (–|-|vs\.?) .+/i.test(line);
+
+      const isPick = (line) =>
+        /^🎯/.test(line) ||
+        /^→/.test(line) ||
+        /(üst|alt|gol|handikap|sonucu|ms|kg var|kg yok)/i.test(line);
+
+      for (const line of lines) {
+        if (isMatch(line)) {
+          if (currentMatch) {
+            res.matches.push({ match: currentMatch, pick: "" });
+          }
+          currentMatch = line
+            .replace(/^⚽\s*/, "")
+            .replace(/^[•\-]\s*/, "")
+            .trim();
+        } else if (isPick(line) && currentMatch) {
+          const pick = line
+            .replace(/^🎯\s*/, "")
+            .replace(/^→\s*/, "")
+            .trim();
+          res.matches.push({ match: currentMatch, pick });
+          currentMatch = null;
+        }
+      }
+      if (currentMatch) {
+        res.matches.push({ match: currentMatch, pick: "" });
+      }
+
+      return res;
+    }
+
+    /* =========== DOM =========== */
+
+    const dateInput = EL("dateInput");
+    const icerikSelect = EL("icerikSelect");
+    const stakeInput = EL("stakeInput");
+    const oddsInput = EL("oddsInput");
+    const textInput = EL("textInput");
+    const matchesInput = EL("matchesInput");
+
+    const fillFromTextBtn = EL("fillFromTextBtn");
+    const addCouponBtn = EL("addCouponBtn");
+    const resetFormBtn = EL("resetFormBtn");
+    const resetAllBtn = EL("resetAllBtn");
+
+    const totalBankEl = EL("totalBank");
+    const tekRollBankEl = EL("tekRollBank");
+    const otherBankEl = EL("otherBank");
+    const pendingGrossEl = EL("pendingGross");
+    const pendingGrossDetailEl = EL("pendingGrossDetail");
+
+    const activeTableBody = document.querySelector("#activeTable tbody");
+    const historyTableBody = document.querySelector("#historyTable tbody");
+    const analysisEl = EL("analysisContent");
+
+    let formParsedOnce = false;
+
+    const updateKuponButtonState = () => {
+      const s = clampStake(parseNumber(stakeInput.value));
+      const o = parseNumber(oddsInput.value);
+      const m = matchesInput.value.trim();
+      addCouponBtn.disabled = !formParsedOnce || !s || !o || !m;
+    };
+
+    /* =========== RENDER =========== */
+
+    function recalcAndRender() {
+      const total = state.tekRollBank + state.otherBank;
+      totalBankEl.textContent = formatTL(total);
+      tekRollBankEl.textContent = formatTL(state.tekRollBank);
+      otherBankEl.textContent = formatTL(state.otherBank);
+
+      const pending = state.coupons
+        .filter((c) => c.result === "bekliyor")
+        .reduce((s, c) => s + c.gross, 0);
+
+      pendingGrossEl.textContent = formatTL(pending);
+      pendingGrossDetailEl.textContent = formatTL(pending);
+
+      activeTableBody.innerHTML = "";
+      historyTableBody.innerHTML = "";
+
+      const sorted = state.coupons.slice().sort((a, b) => b.id - a.id);
+
+      sorted.forEach((c) => {
+        const normalizedMatches = (c.matches || []).map(normalizeMatchRow);
+        const stakeText = (c.stake * 100).toFixed(2).replace(/\.00$/, "") + " %";
+
+        if (c.result === "bekliyor") {
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+            <td>${c.date}</td>
+            <td><span class="badge">${c.icerik}</span></td>
+            <td>${stakeText}</td>
+            <td class="right">${formatTL(c.amount)}</td>
+            <td class="right">${c.odds.toFixed(2)}</td>
+            <td class="right">${formatTL(c.gross)}</td>
+            <td class="match-lines">${normalizedMatches
+              .map((x) => (x.match ? "• " + x.match : ""))
+              .filter(Boolean)
+              .join("\n")}</td>
+            <td class="match-lines">${normalizedMatches
+              .map((x) => (x.pick ? "• " + x.pick : ""))
+              .filter(Boolean)
+              .join("\n")}</td>
+          `;
+
+          const actionTd = document.createElement("td");
+          actionTd.style.whiteSpace = "nowrap";
+
+          const btnT = document.createElement("button");
+          btnT.className = "btn-primary";
+          btnT.style.padding = "4px 10px";
+          btnT.textContent = "Tuttu";
+          btnT.onclick = () => markResult(c.id, "tuttu");
+
+          const btnY = document.createElement("button");
+          btnY.className = "btn-secondary";
+          btnY.style.padding = "4px 10px";
+          btnY.textContent = "Yattı";
+          btnY.onclick = () => markResult(c.id, "yatti");
+
+          actionTd.append(btnT, btnY);
+          tr.appendChild(actionTd);
+
+          activeTableBody.appendChild(tr);
+        } else {
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+            <td>${c.date}</td>
+            <td><span class="badge">${c.icerik}</span></td>
+            <td>${stakeText}</td>
+            <td class="right">${formatTL(c.amount)}</td>
+            <td class="right">${c.odds.toFixed(2)}</td>
+            <td class="right">${formatTL(c.gross)}</td>
+            <td class="right">${formatTL(c.net)}</td>
+            <td>
+              <span class="badge ${
+                c.result === "tuttu" ? "badge-success" : "badge-danger"
+              }">${c.result === "tuttu" ? "Tuttu" : "Yattı"}</span>
+            </td>
+            <td class="match-lines">${normalizedMatches
+              .map((x) => (x.match ? "• " + x.match : ""))
+              .filter(Boolean)
+              .join("\n")}</td>
+            <td class="match-lines">${normalizedMatches
+              .map((x) => (x.pick ? "• " + x.pick : ""))
+              .filter(Boolean)
+              .join("\n")}</td>
+          `;
+
+          const delTd = document.createElement("td");
+          const delBtn = document.createElement("button");
+          delBtn.className = "btn-secondary";
+          delBtn.style.padding = "4px 10px";
+          delBtn.textContent = "Sil";
+          delBtn.onclick = () => deleteCoupon(c.id);
+          delTd.appendChild(delBtn);
+          tr.appendChild(delTd);
+
+          historyTableBody.appendChild(tr);
+        }
+      });
+
+      renderAnalysis();
+    }
+
+    /* =========== ANALYSIS (Seçenek 2) =========== */
+
+    function calcStats(list) {
+      const total = list.length;
+      const wins = list.filter((c) => c.result === "tuttu").length;
+      const losses = list.filter((c) => c.result === "yatti").length;
+      const staked = list.reduce((s, c) => s + c.amount, 0);
+      const net = list.reduce((s, c) => s + c.net, 0);
+      const avgOdds =
+        total > 0 ? list.reduce((s, c) => s + c.odds, 0) / total : 0;
+      const successRate = total > 0 ? (wins / total) * 100 : 0;
+      const roi = staked > 0 ? (net / staked) * 100 : 0;
+      return { total, wins, losses, staked, net, avgOdds, successRate, roi };
+    }
+
+    function renderAnalysis() {
+      const finished = state.coupons.filter((c) => c.result !== "bekliyor");
+
+      if (!finished.length) {
+        analysisEl.innerHTML =
+          '<span class="helper-text">Henüz analiz yapılacak sonuçlanmış kupon yok.</span>';
+        return;
+      }
+
+      const tekList = finished.filter((c) => c.icerik === "Tek Roll");
+      const otherList = finished.filter((c) => c.icerik !== "Tek Roll");
+
+      const globalStats = calcStats(finished);
+      const tekStats = calcStats(tekList);
+      const otherStats = calcStats(otherList);
+
+      const perOther = {};
+      otherList.forEach((c) => {
+        if (!perOther[c.icerik]) perOther[c.icerik] = { w: 0, l: 0 };
+        if (c.result === "tuttu") perOther[c.icerik].w++;
+        else if (c.result === "yatti") perOther[c.icerik].l++;
+      });
+
+      let bestOther = null;
+      for (const [name, obj] of Object.entries(perOther)) {
+        const total = obj.w + obj.l;
+        const rate = total ? (obj.w / total) * 100 : 0;
+        if (!bestOther || rate > bestOther.rate) bestOther = { name, rate };
+      }
+
+      const fmtPct = (x) =>
+        isFinite(x) ? x.toFixed(1).replace(".0", "") + " %" : "-";
+
+      analysisEl.innerHTML = `
+        <div class="analysis-grid">
+          <!-- GENEL -->
+          <div class="analysis-card">
+            <div class="analysis-title">Genel Performans</div>
+            <div class="analysis-main">${fmtPct(globalStats.successRate)}</div>
+            <div class="analysis-row">
+              <span>Toplam kupon</span>
+              <span>${globalStats.total}</span>
+            </div>
+            <div class="analysis-row">
+              <span>Tuttu / Yattı</span>
+              <span>${globalStats.wins} / ${globalStats.losses}</span>
+            </div>
+            <div class="analysis-row">
+              <span>Net kâr</span>
+              <span>
+                ${formatTL(globalStats.net)}
+                <span class="chip ${
+                  globalStats.net >= 0 ? "green" : "red"
+                }">ROI ${fmtPct(globalStats.roi)}</span>
+              </span>
+            </div>
+            <div class="analysis-row">
+              <span>Ortalama oran</span>
+              <span>${globalStats.avgOdds.toFixed(2)}</span>
+            </div>
+          </div>
+
+          <!-- TEK ROLL -->
+          <div class="analysis-card alt">
+            <div class="analysis-title">Tek Roll Analizi</div>
+            <div class="analysis-main">${fmtPct(tekStats.successRate)}</div>
+            <div class="analysis-row">
+              <span>Toplam Tek Roll</span>
+              <span>${tekStats.total}</span>
+            </div>
+            <div class="analysis-row">
+              <span>Tuttu / Yattı</span>
+              <span>${tekStats.wins} / ${tekStats.losses}</span>
+            </div>
+            <div class="analysis-row">
+              <span>Net kâr</span>
+              <span>
+                ${formatTL(tekStats.net)}
+                <span class="chip ${
+                  tekStats.net >= 0 ? "green" : "red"
+                }">ROI ${fmtPct(tekStats.roi)}</span>
+              </span>
+            </div>
+            <div class="analysis-row">
+              <span>Oynanan toplam</span>
+              <span>${formatTL(tekStats.staked)}</span>
+            </div>
+          </div>
+
+          <!-- DİĞER İÇERİKLER -->
+          <div class="analysis-card warn">
+            <div class="analysis-title">Diğer İçerikler</div>
+            <div class="analysis-main">${fmtPct(otherStats.successRate)}</div>
+            <div class="analysis-row">
+              <span>Toplam kupon</span>
+              <span>${otherStats.total}</span>
+            </div>
+            <div class="analysis-row">
+              <span>Tuttu / Yattı</span>
+              <span>${otherStats.wins} / ${otherStats.losses}</span>
+            </div>
+            <div class="analysis-row">
+              <span>Net kâr</span>
+              <span>
+                ${formatTL(otherStats.net)}
+                <span class="chip ${
+                  otherStats.net >= 0 ? "green" : "red"
+                }">ROI ${fmtPct(otherStats.roi)}</span>
+              </span>
+            </div>
+            <div class="analysis-row">
+              <span>En iyi içerik</span>
+              <span>${
+                bestOther
+                  ? bestOther.name +
+                    ' · <span class="chip green">' +
+                    fmtPct(bestOther.rate) +
+                    " başarı</span>"
+                  : "Veri yok"
+              }</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /* =========== ACTIONS =========== */
+
+    function computePoolAndAmount(icerik, stake) {
+      const isTek = icerik === "Tek Roll";
+      const pool = isTek ? "tekRollBank" : "otherBank";
+      const amount = Math.round(state[pool] * stake);
+      return { pool, amount };
+    }
+
+    function addCouponFromForm() {
+      const matchesRaw = matchesInput.value.trim();
+      if (!matchesRaw) return;
+
+      const icerik = icerikSelect.value;
+      const stake = clampStake(parseNumber(stakeInput.value));
+      const odds = parseNumber(oddsInput.value);
+
+      if (!stake || !odds) return;
+
+      const { pool, amount } = computePoolAndAmount(icerik, stake);
+      if (amount <= 0 || amount > state[pool]) {
+        alert("Stake miktarı kasaya göre geçersiz görünüyor.");
+        return;
+      }
+
+      const gross = amount * odds;
+      const dateVal = dateInput.value.trim() || todayStr();
+
+      const couponsMatches = matchesRaw
+        .split(/\r?\n/)
+        .map((l) => l.trim())
+        .filter(Boolean);
+
+      const parsedMatches = couponsMatches.map((line) => {
+        const parts = line.split("→");
+        if (parts.length === 2) {
+          return { match: parts[0].trim(), pick: parts[1].trim() };
+        }
+        return { match: line, pick: "" };
+      });
+
+      const coupon = {
+        id: ++state.lastId,
+        date: dateVal,
+        icerik,
+        stake,
+        amount,
+        odds,
+        gross,
+        net: 0,
+        result: "bekliyor",
+        matches: parsedMatches,
+      };
+
+      state[pool] -= amount;
+      state.coupons.push(coupon);
+      saveState();
+      recalcAndRender();
+      resetForm();
+    }
+
+    function markResult(id, result) {
+      const c = state.coupons.find((x) => x.id === id);
+      if (!c) return;
+      const label = result === "tuttu" ? "Tuttu" : "Yattı";
+      if (!confirm(`Bu kuponu "${label}" olarak işaretlemek istiyor musun?`))
+        return;
+
+      const pool = c.icerik === "Tek Roll" ? "tekRollBank" : "otherBank";
+
+      if (result === "tuttu") {
+        c.net = c.gross - c.amount;
+        state[pool] += c.gross;
+      } else {
+        c.net = -c.amount;
+      }
+
+      c.result = result;
+      saveState();
+      recalcAndRender();
+    }
+
+    function deleteCoupon(id) {
+      if (!confirm("Bu kuponu silmek istiyor musun?")) return;
+      state.coupons = state.coupons.filter((c) => c.id !== id);
+      saveState();
+      recalcAndRender();
+    }
+
+    function resetForm() {
+      stakeInput.value = "";
+      oddsInput.value = "";
+      textInput.value = "";
+      matchesInput.value = "";
+      formParsedOnce = false;
+      updateKuponButtonState();
+    }
+
+    function resetAll() {
+      if (
+        !confirm(
+          "Tüm veriyi sıfırlamak üzeresin. Kasalar ve kuponlar sıfırlanacak. Emin misin?"
+        )
+      )
+        return;
+      state = {
+        tekRollBank: INITIAL_TEK,
+        otherBank: INITIAL_OTHER,
+        coupons: [],
+        lastId: 0,
+      };
+      saveState();
+      recalcAndRender();
+    }
+
+    /* =========== EVENTS =========== */
+
+    const dateInputEl = EL("dateInput");
+    if (!dateInputEl.value) dateInputEl.value = todayStr();
+
+    fillFromTextBtn.addEventListener("click", () => {
+      const parsed = parseCouponText(textInput.value);
+
+      if (parsed.date) dateInput.value = parsed.date;
+      else if (!dateInput.value) dateInput.value = todayStr();
+
+      if (parsed.icerik) icerikSelect.value = parsed.icerik;
+      if (parsed.stake) stakeInput.value = parsed.stake;
+      if (parsed.odds) oddsInput.value = parsed.odds;
+
+      if (parsed.matches && parsed.matches.length) {
+        const lines = parsed.matches.map((m) =>
+          m.pick ? `${m.match} → ${m.pick}` : m.match
+        );
+        matchesInput.value = lines.join("\n");
+      } else {
+        matchesInput.value = "";
+      }
+
+      formParsedOnce = true;
+      updateKuponButtonState();
+    });
+
+    addCouponBtn.addEventListener("click", addCouponFromForm);
+    resetFormBtn.addEventListener("click", resetForm);
+    resetAllBtn.addEventListener("click", resetAll);
+
+    stakeInput.addEventListener("input", updateKuponButtonState);
+    oddsInput.addEventListener("input", updateKuponButtonState);
+    matchesInput.addEventListener("input", updateKuponButtonState);
+
+    /* =========== INIT =========== */
+
+    loadState();
+    recalcAndRender();
+    updateKuponButtonState();
+  </script>
+  <!-- FIREBASE REALTIME DATABASE BAĞLANTISI -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDYLnJTw3nFgtVT5kDYIu2TlX85q-c1KUM",
+      authDomain: "kasa-paneli.firebaseapp.com",
+      databaseURL: "https://kasa-paneli-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "kasa-paneli",
+      storageBucket: "kasa-paneli.firebasestorage.app",
+      messagingSenderId: "1003492014234",
+      appId: "1:1003492014234:web:a69b18aa8acb696cda0723",
+      measurementId: "G-XPVZ75J0Z7"
+    };
+
+    // Firebase başlat
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const DB_PATH = "kasa/state";
+
+    // Cloud'a yaz
+    window.saveStateToCloud = function () {
+      return set(ref(db, DB_PATH), state);
+    };
+
+    // Cloud'dan sürekli dinle
+    window.listenStateFromCloud = function () {
+      onValue(ref(db, DB_PATH), (snapshot) => {
+        const cloudState = snapshot.val();
+        if (cloudState) {
+          state = cloudState;
+          recalcAndRender();
+        }
+      });
+    };
+  </script>
+
+</body>
+</html>
